@@ -53,13 +53,13 @@ if __name__ == '__main__':
     y_test = env._y_test
     for index in tqdm(range(len(X_train)), desc="Evaluate training accuracy"):
         action, p = get_action(X_train[index])
-        if action == y_train[index]:
+        if action == y_train[index][-1]:
             training_total_match += 1
 
     for index in tqdm(range(len(X_test)), desc="Evaluate training accuracy"):
         action, p = get_action(X_test[index])
         print(p)
-        if action == y_test[index]:
+        if action == y_test[index][-1]:
             testing_total_match += 1
 
     print("Saving results...")

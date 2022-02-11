@@ -20,16 +20,16 @@ class Environment():
         dataloader = LSTMDataLoader(config)
         self._X_train, self._y_train, self._X_test, self._y_test = dataloader.split_train_test(
             self._start_train, self._end_train, self._start_backtest, self._end_backtest)
-        self._X_train = list(np.squeeze(self._X_train))
-        self._X_test = list(np.squeeze(self._X_test))
-        self._y_train = list(np.squeeze(self._y_train))
-        self._y_test = list(np.squeeze(self._y_test))
+        self._X_train = list(np.squeeze(self._X_train, 1))
+        self._X_test = list(np.squeeze(self._X_test, 1))
+        self._y_train = list(self._y_train)
+        self._y_test = list(self._y_test)
 
         self._list_state = self._X_train.copy()
         self._gt = self._y_train.copy()
 
     def get_num_fts(self):
-        return self._X_train[0].shape[0]
+        return self._X_train[0].shape[-1]
 
 
     def reset(self):
@@ -43,7 +43,7 @@ class Environment():
         return self._list_state[0]
 
     def step(self, action):
-        action_gt = self._gt[0]
+        action_gt = self._gt[0][-1]
         self._list_state.pop(0)
         self._gt.pop(0)
         if action == self._buy:            

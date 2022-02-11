@@ -11,8 +11,8 @@ class Agent(nn.Module):
         self.softmax = nn.Softmax(dim=1)
 
 
-    def forward(self, states):
-        embed_o = self.embed(states)
+    def forward(self, state):
+        embed_o = self.embed(state)
         lstm_o = self.lstm(embed_o)[0]
         lstm_o = lstm_o[:, -1, :]
         dropout_o = self.dropout(lstm_o)

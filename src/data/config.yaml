@@ -70,7 +70,7 @@ model:
   fp_score: -15
   fn_score: -15
   gamma: 0.99
-  episode: 2000
+  episode: 1
 
 backtest:
   config_path: backtest/config/base.yaml
