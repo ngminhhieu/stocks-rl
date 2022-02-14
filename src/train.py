@@ -41,7 +41,7 @@ def finish_episode():
     for r in memory._reward[::-1]:
         R = r + config["model"]["gamma"] * R
         returns.insert(0, R)
-    returns = torch.tensor(returns)
+    returns = torch.tensor(np.array(returns)).to(device)
     eps = np.finfo(np.float32).eps.item()
     returns = (returns - returns.mean()) / (returns.std() + eps)
     for log_prob, R in zip(memory._saved_log_probs, returns):
@@ -81,7 +81,8 @@ def train():
 
             # add reward
             memory._reward.append(reward)
-            ep_reward += reward
+            # ep_reward += reward
+            ep_reward = reward
             if done:
                 break
 
@@ -101,10 +102,11 @@ def train():
         torch.save(agent.state_dict(), weight_dir + "/best.pt")
         # Monitoring
         if ep % 10 == 0:
-            print("Episode: {}   Reward: {}/{}   Agent loss: {}".format(ep,
-                  ep_reward, total_reward, loss.cpu().detach().numpy()))
-        if ep % 10 == 0:
-            print(env._matched)
+            # print("Episode: {}   Reward: {}/{}   Agent loss: {}".format(ep,
+            #       ep_reward, total_reward, loss.cpu().detach().numpy()))
+            print("Episode: {}   Reward: {}   Agent loss: {}".format(ep, ep_reward, loss.cpu().detach().numpy()))
+        # if ep % 10 == 0:
+        #     print(env._matched)
 
         # Early stopping
         if ep_reward == total_reward:
@@ -123,7 +125,7 @@ if __name__ == '__main__':
     sys.path.append(os.getcwd())
     parser = argparse.ArgumentParser()
     parser.add_argument('--seed',
-                        default=52,
+                        default=42,
                         type=int,
                         help='Seed')
 

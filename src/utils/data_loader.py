@@ -197,7 +197,7 @@ class DataLoader():
 
         df = indi.remove_outliers(df, features, threshold = self._outlier_threshold)
         df = df[slow_period:-self._n_step_ahead] # slow_period: SMA and other indicators, 5: days of a week
-        if not self._include_target:
+        if not self._include_target and self._target_col in features:
             features.remove(self._target_col)
         df_y = df[self._target_col]
         df_x = df.filter((features))

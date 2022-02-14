@@ -22,15 +22,16 @@ data:
   #      'PGC', 'NAF', 'CTF', 'NHH', 'VNG', 'EVG', 'ELC', 'TCL', 'DLG',
   #      'VTO', 'LSS', 'FIR', 'CTI', 'HAX', 'ADS', 'GDT', 'APG', 'VIP',
   #      'JVC']
-  symbols: ['HPG']
+  symbols: ['VCB']
   start_train: "2020-07-01"
   end_train: "2021-08-01"
   start_backtest: "2021-11-01"
   end_backtest: "2022-01-28"
   n_step_ahead: 5
-  target_col: trend
+  # target_col: trend
+  target_col: close
   include_target: False
-  history_window: 2
+  history_window: 5
   outlier_threshold: 1000
   indicators:
     # ichimoku: {fast_period: 5, medium_period: 10, slow_period: 30}
@@ -45,7 +46,7 @@ data:
     # kdj: {medium_period: 10, slow_period: 30}
     rsi: {medium_period: 10, slow_period: 30}
     macd: {medium_period: 10, slow_period: 30}
-    trend: {trend_up_threshold: 0, trend_down_threshold: 0}
+    # trend: {trend_up_threshold: 0, trend_down_threshold: 0}
     mfi: {medium_period: 10, slow_period: 30}
     # obv: {medium_period: 10, slow_period: 30}
     bb: {}
@@ -70,7 +71,9 @@ model:
   fp_score: -15
   fn_score: -15
   gamma: 0.99
-  episode: 1
+  episode: 500
+  initial_balance: 1000000000
+  commission: 0.07
 
 backtest:
   config_path: backtest/config/base.yaml

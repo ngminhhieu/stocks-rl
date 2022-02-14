@@ -26,10 +26,11 @@ if __name__ == '__main__':
     
     with open("data/config.yaml") as f:
         config = yaml.safe_load(f)
+    config["data"]["target_col"] = "trend"
+    config["data"]["indicators"]["trend"] = {"trend_up_threshold": 0, "trend_down_threshold": 0}
 
     print("Beginning the training process...")
     results_dir = get_log_dir(config["project"]["run_name"])
-    # run = wandb.init(project=config["project"]["project_name"], entity="bkai", config=args, resume=True)
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
     print("Building the environment...")
@@ -67,8 +68,4 @@ if __name__ == '__main__':
     print("Training accuracy: ", training_acc)
     testing_acc = testing_total_match/len(X_test)
     print("Testing accuracy: ", testing_acc)
-    # # online
-    # wandb.log({"Training accuracy": training_acc,
-    #           "Testing accuracy:": testing_acc})
-    # local
     save_results([training_acc, testing_acc], results_dir + "/accuracy.csv")

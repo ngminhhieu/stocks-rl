@@ -152,7 +152,8 @@ def trend(df, features, trend_up_threshold, trend_down_threshold, n_step_ahead):
     df['trend_return'] = df['trend_return'].shift(-n_step_ahead)
     df["trend"] = 0
     df.loc[(df['trend_return'] > trend_up_threshold), 'trend'] = 1
-    df.loc[(df['trend_return'] <= -trend_down_threshold), 'trend'] = 0
+    # df.loc[(df['trend_return'] <= -trend_down_threshold), 'trend'] = 0
+    df.loc[(df['trend_return'] <= -trend_down_threshold), 'trend'] = 2
 
     features.extend(["trend"])
     return df, features
