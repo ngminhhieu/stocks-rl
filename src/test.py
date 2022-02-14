@@ -37,7 +37,7 @@ if __name__ == '__main__':
     env = Environment(config)
 
     print("Intitializing agent...")
-    agent = Agent(env.get_num_fts(), 32, 16)
+    agent = Agent(env._get_num_fts(), 32, 16)
     agent.load_state_dict(torch.load("./log/train/weight/{}/{}".format(config["project"]["run_name"], "final.pt")))
     agent.to(device)
     agent.eval()

@@ -30,7 +30,7 @@ data:
   n_step_ahead: 3
   target_col: trend
   include_target: False
-  history_window: 5
+  history_window: 1
   outlier_threshold: 1000
   indicators:
     # ichimoku: {fast_period: 5, medium_period: 10, slow_period: 30}
@@ -45,7 +45,7 @@ data:
     # kdj: {medium_period: 10, slow_period: 30}
     rsi: {medium_period: 10, slow_period: 30}
     macd: {medium_period: 10, slow_period: 30}
-    trend: {trend_up_threshold: 0, trend_down_threshold: 0}
+    trend: {trend_up_threshold: 0.02, trend_down_threshold: 0.02}
     # mfi: {medium_period: 10, slow_period: 30}
     # obv: {medium_period: 10, slow_period: 30}
     # bb: {}

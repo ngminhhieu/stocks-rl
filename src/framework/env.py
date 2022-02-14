@@ -1,16 +1,18 @@
 import numpy as np
 from data.data_loader import LSTMDataLoader
-import torch
+import gym
+from gym import spaces
 
-class Environment():
+class Environment(gym.Env):
     def __init__(self, config):
         self._config = config
         self._tp_score = config["model"]["tp_score"]
         self._tn_score = config["model"]["tn_score"]
         self._fp_score = config["model"]["fp_score"]
         self._fn_score = config["model"]["fn_score"]
+        self._hold_signal = 0
         self._buy_signal = 1
-        self._sell_signal = 0
+        self._sell_signal = 2
         self._matched = {'tp': 0, 'fp': 0, 'tn': 0, 'fn': 0}
 
         self._start_train = config["data"]["start_train"]
@@ -24,11 +26,15 @@ class Environment():
         self._X_test = list(np.squeeze(self._X_test, 1))
         self._y_train = list(self._y_train)
         self._y_test = list(self._y_test)
-
+    
         self._list_state = self._X_train.copy()
         self._gt = self._y_train.copy()
+        # self.action_space = spaces.Box(low = 0, high = 2,shape = (1,)) 
+        self.observation_space = spaces.Box(low=0, high=np.inf, shape = (self._get_num_fts(),))
+        self.action_space = spaces.Discrete(3)
+        
 
-    def get_num_fts(self):
+    def _get_num_fts(self):
         return self._X_train[0].shape[-1]
 
     def reset(self):
@@ -39,26 +45,29 @@ class Environment():
         self._list_state = self._X_train.copy()
         self._gt = self._y_train.copy()
         self._matched = {'tp': 0, 'fp': 0, 'tn': 0, 'fn': 0}
-        return self._list_state[0]
+        return self._list_state[0][0]
 
     def step(self, action):
         action_gt = self._gt[0][-1]
         self._list_state.pop(0)
         self._gt.pop(0)
+        score = 0
         if action == self._buy_signal:            
-            if self.is_match(action, action_gt):
+            if self._is_match(action, action_gt):
                 score = self._tp_score
                 self._matched['tp'] += 1 
-            elif not self.is_match(action, action_gt):
+            elif not self._is_match(action, action_gt):
                 score = self._fp_score
                 self._matched['fp'] += 1 
         elif action == self._sell_signal:
-            if self.is_match(action, action_gt):
+            if self._is_match(action, action_gt):
                 score = self._fn_score
                 self._matched['fn'] += 1 
-            elif not self.is_match(action, action_gt):
+            elif not self._is_match(action, action_gt):
                 score = self._tn_score
                 self._matched['tn'] += 1
+        elif action == self._hold_signal:
+            pass
         else:
             raise ValueError(
                 "Received invalid action={} which is not part of the action space".format(action))
@@ -67,10 +76,10 @@ class Environment():
             next_state = (None, None)
             done = True
         else:
-            next_state = self._list_state[0]
+            next_state = self._list_state[0][0]
             done = False
 
-        return next_state, score, done
+        return next_state, score, done, {}
 
-    def is_match(self, action, action_gt):
+    def _is_match(self, action, action_gt):
         return action == action_gt

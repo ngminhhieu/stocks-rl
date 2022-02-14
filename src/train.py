@@ -143,7 +143,7 @@ if __name__ == '__main__':
     memory = Memory()
 
     print("Intitializing agent...")
-    agent = Agent(env.get_num_fts(), 32, 16)
+    agent = Agent(env._get_num_fts(), 32, 16)
 
     optimizer = optim.Adam(agent.parameters(), lr=config["model"]["learning_rate"])
     agent.to(device)
