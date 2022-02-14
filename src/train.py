@@ -69,8 +69,7 @@ def train():
 
         # Reset environment
         state, ep_reward = env.reset(), 0
-        total_reward = num_gt * config["model"]["tp_score"] + \
-            (len(env._list_state) - num_gt) * config["model"]["tn_score"]
+
         # Get policy, action and reward
         while True:
             action, policy = get_action(state)
@@ -97,26 +96,11 @@ def train():
 
         results["training"].append(
             [ep, ep_reward, loss.cpu().detach().numpy(), end_episode - start_episode])
-        results["accuracy"].append(
-            [env._matched["tp"], env._matched["tn"], env._matched["fp"], env._matched["fn"]])
         torch.save(agent.state_dict(), weight_dir + "/best.pt")
+
         # Monitoring
         if ep % 10 == 0:
-            # print("Episode: {}   Reward: {}/{}   Agent loss: {}".format(ep,
-            #       ep_reward, total_reward, loss.cpu().detach().numpy()))
             print("Episode: {}   Reward: {}   Agent loss: {}".format(ep, ep_reward, loss.cpu().detach().numpy()))
-        # if ep % 10 == 0:
-        #     print(env._matched)
-
-        # Early stopping
-        if ep_reward == total_reward:
-            early_stopping += 1
-        else:
-            early_stopping = 0
-        if early_stopping == config["model"]["earlystop"]:
-            print("Early stopping")
-            print("Goal reached! Reward: {}/{}".format(ep_reward, total_reward))
-            break
 
     return results, agent
 
@@ -137,7 +121,6 @@ if __name__ == '__main__':
 
     print("Beginning the training process...")
     results_dir, weight_dir = get_log_dir(config["project"]["run_name"])
-    # run = wandb.init(project=config["project"]["project_name"], entity="bkai", config=args, resume=True)
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
     print("Building the environment...")

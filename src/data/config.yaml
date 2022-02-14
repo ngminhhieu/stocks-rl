@@ -28,7 +28,6 @@ data:
   start_backtest: "2021-11-01"
   end_backtest: "2022-01-28"
   n_step_ahead: 5
-  # target_col: trend
   target_col: close
   include_target: False
   history_window: 5
@@ -53,7 +52,7 @@ data:
     arithmetic_returns: {}
     k_line: {}
     eight_trigrams: {}
-    # trend_return: {}
+    trend_return: {}
 model:
   confidence_threshold: 0.90
   earlystop: 16
@@ -66,10 +65,6 @@ model:
   save_best: False
   lr_decay: 0.008
   eval_iter: 10
-  tp_score: 10
-  tn_score: 10
-  fp_score: -15
-  fn_score: -15
   gamma: 0.99
   episode: 500
   initial_balance: 1000000000
