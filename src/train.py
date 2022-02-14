@@ -81,8 +81,7 @@ def train():
 
             # add reward
             memory._reward.append(reward)
-            # ep_reward += reward
-            ep_reward = reward
+            ep_reward += reward
             if done:
                 break
 
@@ -102,11 +101,10 @@ def train():
         torch.save(agent.state_dict(), weight_dir + "/best.pt")
         # Monitoring
         if ep % 10 == 0:
-            # print("Episode: {}   Reward: {}/{}   Agent loss: {}".format(ep,
-            #       ep_reward, total_reward, loss.cpu().detach().numpy()))
-            print("Episode: {}   Reward: {}   Agent loss: {}".format(ep, ep_reward, loss.cpu().detach().numpy()))
-        # if ep % 10 == 0:
-        #     print(env._matched)
+            print("Episode: {}   Reward: {}/{}   Agent loss: {}".format(ep,
+                  ep_reward, total_reward, loss.cpu().detach().numpy()))
+        if ep % 10 == 0:
+            print(env._matched)
 
         # Early stopping
         if ep_reward == total_reward:

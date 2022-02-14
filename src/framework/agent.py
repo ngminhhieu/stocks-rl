@@ -5,7 +5,7 @@ class Agent(nn.Module):
         super(Agent, self).__init__()
         self.embed = nn.Linear(input_shape, embedding_dim)
         self.lstm = nn.LSTM(embedding_dim, hidden_dim, batch_first=True)
-        self.dropout = nn.Dropout(p=0)
+        self.dropout = nn.Dropout(p=0.2)
         self.relu = nn.ReLU()
         self.fc = nn.Linear(hidden_dim, 2)
         self.softmax = nn.Softmax(dim=1)

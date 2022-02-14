@@ -27,9 +27,8 @@ data:
   end_train: "2021-08-01"
   start_backtest: "2021-11-01"
   end_backtest: "2022-01-28"
-  n_step_ahead: 5
-  # target_col: trend
-  target_col: close
+  n_step_ahead: 3
+  target_col: trend
   include_target: False
   history_window: 5
   outlier_threshold: 1000
@@ -37,23 +36,23 @@ data:
     # ichimoku: {fast_period: 5, medium_period: 10, slow_period: 30}
     close_ratio: {medium_period: 10, slow_period: 30}
     volume_ratio: {medium_period: 10, slow_period: 30}
-    close_sma: {medium_period: 10, slow_period: 30}
-    volume_sma: {medium_period: 10, slow_period: 30}
-    close_ema: {medium_period: 10, slow_period: 30}
-    volume_ema: {medium_period: 10, slow_period: 30}
+    # close_sma: {medium_period: 10, slow_period: 30}
+    # volume_sma: {medium_period: 10, slow_period: 30}
+    # close_ema: {medium_period: 10, slow_period: 30}
+    # volume_ema: {medium_period: 10, slow_period: 30}
     atr: {medium_period: 10, slow_period: 30}
-    adx: {medium_period: 10, slow_period: 30}
+    # adx: {medium_period: 10, slow_period: 30}
     # kdj: {medium_period: 10, slow_period: 30}
     rsi: {medium_period: 10, slow_period: 30}
     macd: {medium_period: 10, slow_period: 30}
-    # trend: {trend_up_threshold: 0, trend_down_threshold: 0}
-    mfi: {medium_period: 10, slow_period: 30}
+    trend: {trend_up_threshold: 0, trend_down_threshold: 0}
+    # mfi: {medium_period: 10, slow_period: 30}
     # obv: {medium_period: 10, slow_period: 30}
-    bb: {}
-    arithmetic_returns: {}
-    k_line: {}
-    eight_trigrams: {}
-    # trend_return: {}
+    # bb: {}
+    # arithmetic_returns: {}
+    # k_line: {}
+    # eight_trigrams: {}
+    trend_return: {}
 model:
   confidence_threshold: 0.90
   earlystop: 16
@@ -68,10 +67,10 @@ model:
   eval_iter: 10
   tp_score: 10
   tn_score: 10
-  fp_score: -15
-  fn_score: -15
+  fp_score: -20
+  fn_score: -20
   gamma: 0.99
-  episode: 500
+  episode: 200
   initial_balance: 1000000000
   commission: 0.07
 
