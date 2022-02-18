@@ -76,7 +76,7 @@ def train():
             if ep == config["model"]["episode"]:
                 results["policy"].append(policy)
                 
-            next_state, reward, done = env.step(action)
+            next_state, reward, done, _ = env.step(action)
 
             # add reward
             memory._reward.append(reward)

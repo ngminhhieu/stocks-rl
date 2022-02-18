@@ -1,17 +1,14 @@
+import gym
+from gym import spaces
 import numpy as np
 from data.data_loader import LSTMDataLoader
 
-class Environment():
+class Environment(gym.Env):
     def __init__(self, config):
         self._config = config
-        self._tp_score = config["model"]["tp_score"]
-        self._tn_score = config["model"]["tn_score"]
-        self._fp_score = config["model"]["fp_score"]
-        self._fn_score = config["model"]["fn_score"]
         self._hold_signal = 0
-        self._buy_signal = 0
-        self._sell_signal = 1
-        self._matched = {'tp': 0, 'fp': 0, 'tn': 0, 'fn': 0}
+        self._buy_signal = 1
+        self._sell_signal = 2
 
         self._start_train = config["data"]["start_train"]
         self._end_train = config["data"]["end_train"]
@@ -35,9 +32,11 @@ class Environment():
         self._commission = config["model"]["commission"]
         self._current_size = 0
         self._total_asset = 0
+        self.observation_space = spaces.Box(low=0, high=np.inf, shape = (self._get_num_fts(),))
+        self.action_space = spaces.Discrete(3)
     
 
-    def get_num_fts(self):
+    def _get_num_fts(self):
         return self._X_train[0].shape[-1]
 
 
@@ -48,7 +47,6 @@ class Environment():
         """
         self._list_state = self._X_train.copy()
         self._gt = self._y_train.copy()
-        self._matched = {'tp': 0, 'fp': 0, 'tn': 0, 'fn': 0}
         self._balance = self._config["model"]["initial_balance"]
         self._current_size = 0
         self._total_asset = self._balance
@@ -81,7 +79,7 @@ class Environment():
             self._reward = self._total_asset / self._initial_balance
             done = False
 
-        return next_state, self._reward, done
+        return next_state, self._reward, done, {}
 
 
     def _buy(self, close_price, size):
