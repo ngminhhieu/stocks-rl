@@ -1,7 +1,7 @@
 import gym
 from gym import spaces
 import numpy as np
-from data.data_loader import LSTMDataLoader
+from model.reinforce.data.data_loader import LSTMDataLoader
 
 class Environment(gym.Env):
     def __init__(self, config):
@@ -38,6 +38,9 @@ class Environment(gym.Env):
 
     def _get_num_fts(self):
         return self._X_train[0].shape[-1]
+
+    def _get_train_test_data(self):
+        return self._X_train, self._y_train, self._X_test, self._y_test
 
 
     def reset(self):

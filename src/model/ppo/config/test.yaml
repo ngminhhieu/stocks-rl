@@ -1,0 +1,73 @@
+project:
+  run_name: ppo
+  project_name: stocks-rl
+data:
+  # symbols: ['VCB', 'VIC', 'VHM', 'HPG', 'VNM', 'TCB', 'GAS', 'MSN', 'BID',
+  #      'VPB', 'NVL', 'GVR', 'CTG', 'MBB', 'SAB', 'ACB', 'MWG', 'FPT',
+  #      'VJC', 'VRE', 'PLX', 'STB', 'BVH', 'TPB', 'PDR', 'HVN', 'HDB',
+  #      'EIB', 'SSI', 'POW', 'KDH', 'LPB', 'VND', 'HSG', 'VCI', 'PNJ',
+  #      'REE', 'KBC', 'GEX', 'HCM', 'KDC', 'VGC', 'GMD', 'DPM', 'DIG',
+  #      'DCM', 'SBT', 'NLG', 'DXG', 'FTS', 'HPX', 'VHC', 'HDG', 'PVD',
+  #      'HNG', 'HT1', 'NKG', 'VPI', 'PVT', 'FLC', 'PPC', 'ITA', 'DBC',
+  #      'SJS', 'PHR', 'PC1', 'VSH', 'TCH', 'CMG', 'NT2', 'HDC', 'BWE',
+  #      'AGR', 'PAN', 'TMS', 'DHC', 'PTB', 'CTD', 'KOS', 'DGW', 'CII',
+  #      'SCR', 'GTN', 'GEG', 'HAG', 'POM', 'SZC', 'TCM', 'BMP', 'SAM',
+  #      'MSH', 'ASM', 'IJC', 'DRC', 'BCG', 'ANV', 'FRT', 'VSC', 'AAA',
+  #      'AGG', 'CKG', 'BMI', 'STK', 'HBC', 'FIT', 'HAH', 'FMC', 'BIC',
+  #      'VOS', 'TLG', 'SMC', 'ROS', 'TDM', 'CTS', 'CRE', 'CSV', 'CHP',
+  #      'DBD', 'VPG', 'GIL', 'TVB', 'AST', 'LHG', 'RAL', 'PET', 'HTN',
+  #      'TLH', 'DVP', 'KSB', 'LCG', 'OGC', 'DCL', 'NTL', 'TDC', 'DPG',
+  #      'DMC', 'TGG', 'CSM', 'TV2', 'QCG', 'HQC', 'HHS', 'LIX', 'SHI',
+  #      'IBC', 'LDG', 'FCN', 'TIP', 'D2D', 'BFC', 'TTF', 'TSC', 'TDH',
+  #      'PGC', 'NAF', 'CTF', 'NHH', 'VNG', 'EVG', 'ELC', 'TCL', 'DLG',
+  #      'VTO', 'LSS', 'FIR', 'CTI', 'HAX', 'ADS', 'GDT', 'APG', 'VIP',
+  #      'JVC']
+  symbols: ['VCB']
+  start_train: "2020-07-01"
+  end_train: "2021-08-01"
+  start_backtest: "2021-11-01"
+  end_backtest: "2022-01-28"
+  n_step_ahead: 5
+  target_col: close
+  include_target: False
+  history_window: 1
+  outlier_threshold: 1000
+  indicators:
+    # ichimoku: {fast_period: 5, medium_period: 10, slow_period: 30}
+    close_ratio: {medium_period: 10, slow_period: 30}
+    volume_ratio: {medium_period: 10, slow_period: 30}
+    close_sma: {medium_period: 10, slow_period: 30}
+    volume_sma: {medium_period: 10, slow_period: 30}
+    close_ema: {medium_period: 10, slow_period: 30}
+    volume_ema: {medium_period: 10, slow_period: 30}
+    atr: {medium_period: 10, slow_period: 30}
+    adx: {medium_period: 10, slow_period: 30}
+    # kdj: {medium_period: 10, slow_period: 30}
+    rsi: {medium_period: 10, slow_period: 30}
+    macd: {medium_period: 10, slow_period: 30}
+    trend: {trend_up_threshold: 0.02, trend_down_threshold: 0.02}
+    mfi: {medium_period: 10, slow_period: 30}
+    # obv: {medium_period: 10, slow_period: 30}
+    bb: {}
+    arithmetic_returns: {}
+    k_line: {}
+    eight_trigrams: {}
+    trend_return: {}
+model:
+  confidence_threshold: 0.90
+  earlystop: 16
+  batch_size: 64
+  hidden_dim: 64
+  rnn_units: 128
+  learning_rate: 0.001
+  cuda: True
+  resume: False
+  save_best: False
+  lr_decay: 0.008
+  eval_iter: 10
+  gamma: 0.99
+  episode: 500
+  initial_balance: 1000000000
+  commission: 0.07
+backtest:
+  config_path: backtest/config/base.yaml
