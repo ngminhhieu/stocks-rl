@@ -107,7 +107,7 @@ class ReinforceSupervisor():
         testing_acc = testing_total_match/len(self._X_test)
         print("Testing accuracy: ", testing_acc)
         save_results([training_acc, testing_acc], self._pretrained_log + "/accuracy.csv")
-
+        
         # obs = self._env.reset()
         # while True:
         #     action, _states = self._model.predict(obs)
