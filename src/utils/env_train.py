@@ -3,7 +3,7 @@ from gym import spaces
 import numpy as np
 from model.reinforce.data.data_loader import LSTMDataLoader
 
-class Environment(gym.Env):
+class EnvironmentTrain(gym.Env):
     def __init__(self, config):
         self._config = config
         self._hold_signal = 0

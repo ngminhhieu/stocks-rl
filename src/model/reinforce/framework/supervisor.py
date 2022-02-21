@@ -1,7 +1,8 @@
 import os
 import numpy as np
 import torch.optim as optim
-from utils.env import Environment
+from utils.env_train import EnvironmentTrain
+from utils.env_test import EnvironmentTest
 from utils.model import save_results
 from model.reinforce.framework.memory import Memory
 from model.reinforce.framework.agent import Agent
@@ -29,7 +30,8 @@ class ReinforceSupervisor():
         
         # Initialize model
         
-        self._env = Environment(config)
+        self._env = EnvironmentTrain(config)
+        self._env_test = EnvironmentTest(config)
         self._X_train = self._env._X_train
         self._y_train = self._env._y_train
         self._X_test = self._env._X_test
@@ -108,13 +110,14 @@ class ReinforceSupervisor():
         print("Testing accuracy: ", testing_acc)
         save_results([training_acc, testing_acc], self._pretrained_log + "/accuracy.csv")
         
-        # obs = self._env.reset()
-        # while True:
-        #     action, _states = self._model.predict(obs)
-        #     obs, rewards, done, info = self._env.step(action)
-        #     if done:
-        #         break
-        # print(rewards)
+        state = self._env_test.reset()
+        while True:
+            action, _ = self._get_action(state)
+            next_state, reward, done, _ = self._env.step(action)
+            state = next_state
+            if done:
+                break
+        print(reward)
 
     
     def _finish_episode(self):

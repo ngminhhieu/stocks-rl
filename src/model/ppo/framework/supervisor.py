@@ -1,5 +1,5 @@
 import os
-from utils.env import Environment
+from utils.env_train import EnvironmentTrain
 from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import DummyVecEnv
 

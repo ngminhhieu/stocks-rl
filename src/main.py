@@ -36,7 +36,7 @@ if __name__ == '__main__':
                         default="reinforce",
                         type=str)
     parser.add_argument('--train',
-                        default=1,
+                        default=0,
                         type=int,
                         help='Train the model')
     parser.add_argument('--test',
